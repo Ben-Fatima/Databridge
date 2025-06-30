@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.3
+    container_name: databridge-mysql
+    env_file:
+      - ./api/.env
+    ports:
+      - "3366:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
