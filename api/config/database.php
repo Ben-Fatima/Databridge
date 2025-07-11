@@ -111,6 +111,17 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+        'mysql_testing' => [
+            'driver'      => 'mysql',
+            'host'        => env('DB_HOST', 'db-test'),
+            'port'        => env('DB_PORT', '3306'),
+            'database'    => env('DB_DATABASE', 'databridge_test'),
+            'username'    => env('DB_USERNAME', 'root'),
+            'password'    => env('DB_PASSWORD', ''),
+            'charset'     => 'utf8mb4',
+            'collation'   => 'utf8mb4_unicode_ci',
+            'strict'      => true,
+        ],
 
     ],
 
