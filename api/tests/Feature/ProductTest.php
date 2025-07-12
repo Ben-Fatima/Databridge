@@ -37,7 +37,7 @@ it('lists products', function () {
 
     $response = $this->getJson('/api/products')->assertOk();
 
-    expect($response->json())->toHaveCount(3);
+      expect($response->json('data'))->toHaveCount(3);
 });
 
 it('shows a single product', function () {
@@ -98,4 +98,40 @@ it('rejects duplicate sku on update', function () {
 it('returns 404 for a missing product', function () {
     $this->getJson('/api/products/999999')
          ->assertNotFound();
+});
+
+/* ──────────────────────────────────────────────────────────────
+|  Existing “lists products” test – now expects 'data' node
+└──────────────────────────────────────────────────────────────*/
+it('lists products (paginated JSON)', function () {
+    Product::factory()->count(3)->create();
+
+    $this->getJson('/api/products')
+         ->assertOk()
+         ->assertJsonCount(3, 'data');
+});
+
+/* ──────────────────────────────────────────────────────────────
+|   Shows max 20 items on first page
+└──────────────────────────────────────────────────────────────*/
+it('paginates 20 per page', function () {
+    Product::factory()->count(25)->create();
+
+    $this->getJson('/api/products')
+         ->assertOk()
+         ->assertJsonCount(20, 'data')
+         ->assertJsonPath('meta.per_page', 20)
+         ->assertJsonPath('meta.total', 25);
+});
+
+/* ──────────────────────────────────────────────────────────────
+|   Returns remaining items on page 2
+└──────────────────────────────────────────────────────────────*/
+it('returns the remaining items on page 2', function () {
+    Product::factory()->count(25)->create();
+
+    $this->getJson('/api/products?page=2')
+         ->assertOk()
+         ->assertJsonCount(5, 'data')
+         ->assertJsonPath('meta.current_page', 2);
 });

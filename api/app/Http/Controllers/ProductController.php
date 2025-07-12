@@ -6,16 +6,19 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Support\Facades\Response;
+use App\Http\Resources\ProductResource;
 
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of last added 20 product.
      */
     public function index()
     {
-        return Product::all();
+        return ProductResource::collection(
+            Product::latest()->paginate(20)
+        );
     }
 
     /**
