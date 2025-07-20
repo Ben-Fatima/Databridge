@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CsvImportController;
 
 /*
 Route::get('/user', function (Request $request) {
@@ -19,4 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('products', ProductController::class);
 });
+
+Route::middleware('auth:sanctum')
+    ->post('/import-csv', [CsvImportController::class, 'store'])
+    ->name('csv.import');
 
