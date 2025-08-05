@@ -11,6 +11,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 */
 
+Route::get('/',    function () {
+    return response()->json(['message' => 'Welcome to the API 👋']);
+});
+
 /* ----- Public ----- */
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login',    [AuthController::class, 'login']);
